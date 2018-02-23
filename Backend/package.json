@@ -1,27 +1,26 @@
 {
-    "name": "deepcity",
-    "version": "1.0.0",
-    "description": "",
-    "main": "app.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Chrysostomos Daniel",
-    "license": "ISC",
-    "dependencies": {
-      "bignumber.js": "^6.0.0",
-      "body-parser": "^1.18.2",
-      "cors": "^2.8.4",
-      "dotenv": "^4.0.0",
-      "ethereumjs-tx": "^1.3.3",
-      "express": "^4.16.2",
-      "gulp": "^3.9.1",
-      "gulp-nodemon": "^2.2.1",
-      "helmet": "^3.10.0",
-      "request": "^2.83.0",
-      "request-promise": "^4.2.2",
-      "twilio": "^3.11.3",
-      "web3": "^1.0.0-beta.29"
-    }
+  "name": "deepcity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chrysostomos Daniel",
+  "license": "ISC",
+  "dependencies": {
+    "bignumber.js": "^6.0.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "ethereumjs-tx": "^1.3.3",
+    "express": "^4.16.2",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "helmet": "^3.10.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "twilio": "^3.11.3",
+    "web3": "^1.0.0-beta.29"
   }
-  
+}
