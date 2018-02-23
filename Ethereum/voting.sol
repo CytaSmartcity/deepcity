@@ -43,4 +43,27 @@ contract Voting {
         }
         return false;
     }
+
+    function improvmentVotes(bytes32 referenceNo) public constant returns (uint8, uint8, uint8) {
+        if (checkImprovment(referenceNo) == false) throw;
+        return (
+            improvmentsStructs[referenceNo].total_yes,
+            improvmentsStructs[referenceNo].total_no,
+            improvmentsStructs[referenceNo].total_votes
+        );
+    }
+    
+    function voteImprovment(bytes32 referenceNo,bytes4 vote_type) {
+        if (checkImprovment(referenceNo) == false) throw;
+        if(vote_type == 'Y') {
+            improvmentsStructs[referenceNo].total_yes += 1;
+        }
+        
+        if(vote_type == 'N') {
+            improvmentsStructs[referenceNo].total_no += 1;
+        }
+        
+        improvmentsStructs[referenceNo].total_votes += 1;
+    }
+    
 }
