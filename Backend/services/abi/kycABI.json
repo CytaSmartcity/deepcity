@@ -1,0 +1,101 @@
+[
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "personCounts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "first_name",
+				"type": "bytes32"
+			},
+			{
+				"name": "last_name",
+				"type": "bytes32"
+			},
+			{
+				"name": "id_number",
+				"type": "bytes8"
+			},
+			{
+				"name": "phone_number",
+				"type": "bytes16"
+			},
+			{
+				"name": "district",
+				"type": "bytes32"
+			},
+			{
+				"name": "post_code",
+				"type": "bytes4"
+			},
+			{
+				"name": "home_address",
+				"type": "bytes32"
+			}
+		],
+		"name": "addPersonDetails",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getPersonDetails",
+		"outputs": [
+			{
+				"name": "first_name",
+				"type": "bytes32"
+			},
+			{
+				"name": "last_name",
+				"type": "bytes32"
+			},
+			{
+				"name": "id_number",
+				"type": "bytes32"
+			},
+			{
+				"name": "phone_number",
+				"type": "bytes16"
+			},
+			{
+				"name": "district",
+				"type": "bytes32"
+			},
+			{
+				"name": "post_code",
+				"type": "bytes4"
+			},
+			{
+				"name": "home_address",
+				"type": "bytes32"
+			},
+			{
+				"name": "status",
+				"type": "bytes4"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
