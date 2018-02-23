@@ -34,4 +34,13 @@ contract Voting {
             }
         }
     }
+
+    function checkImprovment(bytes32 referenceNo) returns (bool) {
+        for(uint i = 0; i < improvmentList.length; i++) {
+            if (improvmentList[i] == referenceNo) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
