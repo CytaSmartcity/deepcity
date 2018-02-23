@@ -14,7 +14,7 @@ contract KYCitizen {
         bytes4 status;
     }
 
-     function addPersonDetails(
+    function addPersonDetails(
         bytes32 first_name, 
         bytes32 last_name, 
         bytes8 id_number,
@@ -38,5 +38,26 @@ contract KYCitizen {
         return true;     
     }
 
+    function getPersonDetails() public constant returns(
+         bytes32 first_name, 
+         bytes32 last_name,
+         bytes32 id_number,
+         bytes16 phone_number,
+         bytes32 district,
+         bytes4  post_code,
+         bytes32 home_address,
+         bytes4 status
+    ) {
+        return (
+            personDetails[msg.sender].first_name,
+            personDetails[msg.sender].last_name,
+            personDetails[msg.sender].id_number,
+            personDetails[msg.sender].phone_number,
+            personDetails[msg.sender].district,
+            personDetails[msg.sender].post_code,
+            personDetails[msg.sender].home_address,
+            personDetails[msg.sender].status
+        );
+    } 
 }
 
