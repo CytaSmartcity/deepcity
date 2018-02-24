@@ -103,8 +103,10 @@ router.post('/create', (req, res) => {
                                         res.status(500).send(err);
                                     else {
                                         var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
-//                                        var amount = new BigNumber(2).mul(new BigNumber(10).pow("18")).toString();
-                                        var amount = 2;
+                                        
+                                        var amount = new BigNumber(0.2).mul(new BigNumber(10).pow(18));
+                                        console.log(amount);
+                                        return;
                                         var rawTransactionObj = {
                                             from: token_public_address,
                                             to: erc20_address,
@@ -139,8 +141,9 @@ router.post('/create', (req, res) => {
 router.post('/sms', (req, res) => {
     console.log(req.body.Body);
     const twiml = new MessagingResponse();
-//    if(req.body.Body == "show district improvement list") {
-    if(req.body.Body == "test") {
+    var text = req.body.Body.split(" ");
+    console.log(text);
+    if(text[0] == "show" || text[0] == "Show") {
         var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
         voting_contract.methods.getImprovmentList().call({from: user_public_address}).then(improvments => {
             if(improvments.length > 0) {
@@ -156,14 +159,65 @@ router.post('/sms', (req, res) => {
                         if(err)
                             console.log(`Error occured: ${err}`);
                     });
-//                    twiml.message(improvmentsList.toString());
-//                    res.writeHead(200, {'Content-Type': 'text/xml'});
-//                    res.end(twiml.toString());
                 }).catch(error => {
                     console.log(error);
                 })
             }
         })
+    }
+    else if(text[0] == "improvement" || text[0] == "Improvement") {
+        var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
+        voting_contract.methods.getImprovmentsInformation(web3.utils.fromAscii(text[1])).call({from: user_public_address}).then(details => {
+            twilio.send(req.body.From, web3.utils.hexToUtf8(details["description"]), (err, is_send) => {
+                if(err)
+                    console.log(`Error occured: ${err}`);
+            });
+        });
+    }
+    else if(text[0] == "vote" || text[0] == "Vote") {
+        var vote_type = "";
+        var age_type = "M";
+        if(text[2] == 'Yes' || text[2] == 'yes') {
+            var vote_type = "Y";
+        }
+        else if(text[2] == 'No' || text[2] == 'no') {
+            var vote_type = "N"
+        }
+        
+        var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
+        voting_contract.methods.checkImprovment(web3.utils.fromAscii(text[1])).call().then(improvment_exist => {
+            if(!improvment_exist)
+                console.log("Improvment doesnt exist")
+            else {
+                web3.eth.getTransactionCount(user_public_address, (err, count_val) => {
+                    var rawTransactionObj = {
+                        from: user_public_address,
+                        to: voting_address,
+                        nonce: count_val,
+                        gasPrice: web3.utils.toHex(99000000000),
+                        gasLimit: web3.utils.toHex(50000),
+                        value: "0x0",
+                        data : voting_contract.methods.voteImprovment(
+                            web3.utils.fromAscii(text[1]),
+                            web3.utils.fromAscii(vote_type),
+                            web3.utils.fromAscii(age_type)
+                        ).encodeABI()
+                    }
+                    var privKey = new Buffer(user_private_key.toLowerCase().replace('0x', ''), 'hex');
+                    var tx = new EthereumTx(rawTransactionObj);
+
+                    tx.sign(privKey);
+                    var serializedTx = tx.serialize();
+                    web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err, hash) => {
+                        twilio.send(req.body.From, "Your district thanks you for your vote. You just increse your balance by 2 Rainbow Tokens", (err, is_send) => {
+                            if(err)
+                                console.log(`Error occured: ${err}`);
+                        });
+                    });
+                });
+            }
+        });
+        
     }
 });
 
