@@ -1,27 +1,5 @@
 [
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "referenceNo",
-				"type": "bytes32"
-			},
-			{
-				"name": "vote_type",
-				"type": "bytes4"
-			},
-			{
-				"name": "age_type",
-				"type": "bytes4"
-			}
-		],
-		"name": "voteImprovment",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -64,6 +42,25 @@
 		"constant": true,
 		"inputs": [
 			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "improvmentList",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
 				"name": "referenceNo",
 				"type": "bytes32"
 			}
@@ -81,6 +78,42 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getImprovmentList",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "referenceNo",
+				"type": "bytes32"
+			},
+			{
+				"name": "title",
+				"type": "bytes32"
+			},
+			{
+				"name": "description",
+				"type": "bytes32"
+			}
+		],
+		"name": "addImprovments",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -110,37 +143,18 @@
 				"type": "bytes32"
 			},
 			{
-				"name": "title",
-				"type": "bytes32"
+				"name": "vote_type",
+				"type": "bytes4"
 			},
 			{
-				"name": "description",
-				"type": "bytes32"
+				"name": "age_type",
+				"type": "bytes4"
 			}
 		],
-		"name": "addImprovments",
+		"name": "voteImprovment",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "improvmentList",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	}
 ]
