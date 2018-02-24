@@ -1,5 +1,6 @@
 var express = require('express'),
     router = express.Router(),
+    twilio = require('../services/twilio'),
     request = require('request'),
     requestpromise = require('request-promise'),
     Web3 = require('web3'),
@@ -136,13 +137,35 @@ router.post('/create', (req, res) => {
 })
 
 router.post('/sms', (req, res) => {
-    console.log(req);
+    console.log(req.body.Body);
     const twiml = new MessagingResponse();
-    
-    twiml.message("Hello world");
-    
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
+//    if(req.body.Body == "show district improvement list") {
+    if(req.body.Body == "test") {
+        var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
+        voting_contract.methods.getImprovmentList().call({from: user_public_address}).then(improvments => {
+            if(improvments.length > 0) {
+                var actions = improvments.map((improvment) => {
+                    var results = voting_contract.methods.getImprovmentsInformation(improvment).call({from: user_public_address}).then(details => {
+                        return `(${web3.utils.hexToUtf8(improvment)}) ${web3.utils.hexToUtf8(details["title"])} `
+                    })
+                    return results;
+                });
+
+                return Promise.all(actions).then((improvmentsList) => {
+                    twilio.send(req.body.From, improvmentsList.join("\n"), (err, is_send) => {
+                        if(err)
+                            console.log(`Error occured: ${err}`);
+                    });
+//                    twiml.message(improvmentsList.toString());
+//                    res.writeHead(200, {'Content-Type': 'text/xml'});
+//                    res.end(twiml.toString());
+                }).catch(error => {
+                    console.log(error);
+                })
+            }
+        })
+    }
 });
+
 
 module.exports = router
