@@ -7,12 +7,16 @@ var express = require('express'),
     BigNumber = require('bignumber.js');
 
 const   voting_ABI = require('../services/abi/votingABI.json'), 
+        erc20_ABI = require('../services/abi/erc20ABI.json'), 
+        erc20_address = process.env.ERC20_ADDRESS,
         user_public_address = process.env.USER_PUBLIC_ADDRESS,
         user_private_key = process.env.USER_PRIVATE_KEY,
         token_public_address = process.env.TOKEN_PUBLIC_ADDRESS,
         token_private_address = process.env.TOKEN_PRIVATE_ADDRESS,
         voting_address = process.env.VOTING_ADDRESS,
         web3 = new Web3(new Web3.providers.HttpProvider(process.env.HOST_ENDPOINT));
+
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 router.get('/get', (req, res) => {
     var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
@@ -93,7 +97,35 @@ router.post('/create', (req, res) => {
                             if (err)
                                 res.status(500).send("Oops! Something went wrong. Please try again!");
                             else {
-                                res.status(200).json({tx_hash: hash,message:"Thank you.the vote now is proceed"})
+                                web3.eth.getTransactionCount(user_public_address, (err, count_val) => {
+                                    if(err)
+                                        res.status(500).send(err);
+                                    else {
+                                        var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
+//                                        var amount = new BigNumber(2).mul(new BigNumber(10).pow("18")).toString();
+                                        var amount = 2;
+                                        var rawTransactionObj = {
+                                            from: token_public_address,
+                                            to: erc20_address,
+                                            nonce: count_val,
+                                            gasPrice: web3.utils.toHex(99000000000),
+                                            gasLimit: web3.utils.toHex(50000),
+                                            value: "0x0",
+                                            data : token_contract.methods.transfer(user_public_address, amount).encodeABI(),
+                                        }
+                                        var privKey = new Buffer(token_private_address.toLowerCase().replace('0x', ''), 'hex');
+                                        var tx = new EthereumTx(rawTransactionObj);
+
+                                        tx.sign(privKey);
+                                        var serializedTx = tx.serialize();
+                                        web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err, token_hash) => {
+                                            if (err)
+                                                res.status(500).send(err.toString())
+                                            else
+                                                res.status(200).json({hash: hash})
+                                        });
+                                    }
+                                });
                             }
                         }); 
                      }
@@ -102,5 +134,15 @@ router.post('/create', (req, res) => {
         });
     }
 })
+
+router.post('/sms', (req, res) => {
+    console.log(req);
+    const twiml = new MessagingResponse();
+    
+    twiml.message("Hello world");
+    
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+});
 
 module.exports = router
