@@ -15,6 +15,10 @@ contract Voting {
     
     bytes32[] public improvmentList;
     
+    function getImprovmentList()public constant returns(bytes32[]) {
+        return improvmentList;
+    }
+    
     function addImprovments(bytes32 referenceNo, bytes32 title, bytes32 description) {
         improvmentList.push(referenceNo);
         improvmentsStructs[referenceNo].title = title;
@@ -77,15 +81,15 @@ contract Voting {
         }
 
         if(age_type == 'Y') {
-            improvmentsStructs[referenceNo].young;
+            improvmentsStructs[referenceNo].young += 1;
         }
 
         if(age_type == 'M') {
-            improvmentsStructs[referenceNo].middle;
+            improvmentsStructs[referenceNo].middle += 1;
         }
 
         if(age_type == 'E') {
-            improvmentsStructs[referenceNo].elder;
+            improvmentsStructs[referenceNo].elder += 1;
         }
         
         improvmentsStructs[referenceNo].total_votes += 1;

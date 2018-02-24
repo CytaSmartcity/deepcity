@@ -52,11 +52,11 @@ contract Ownable {
   }
 }
 
-contract RainbowToken is ERC20, Ownable {
+contract DistrictToken is ERC20, Ownable {
     using SafeMath for uint256;
 
-    string public constant name = "Rainbow Token";
-    string public constant symbol = "RNB";
+    string public constant name = "District Token";
+    string public constant symbol = "DCT";
     
     uint256 public constant decimals = 18;
 
@@ -68,7 +68,7 @@ contract RainbowToken is ERC20, Ownable {
     mapping(address => mapping (address => uint256)) allowances;
 
 
-    function RainbowToken() {
+    function DistrictToken() {
         owner = msg.sender;
         totalSupply = initSupply;
         balances[owner] = initSupply;

@@ -98,21 +98,19 @@ router.post('/create', (req, res) => {
                             if (err)
                                 res.status(500).send("Oops! Something went wrong. Please try again!");
                             else {
-                                web3.eth.getTransactionCount(user_public_address, (err, count_val) => {
+                                web3.eth.getTransactionCount(token_public_address, (err, count_val) => {
                                     if(err)
                                         res.status(500).send(err);
                                     else {
                                         var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
                                         
-                                        var amount = new BigNumber(0.2).mul(new BigNumber(10).pow(18));
-                                        console.log(amount);
-                                        return;
+                                        var amount = new BigNumber(2).mul(new BigNumber(10).pow(18));
                                         var rawTransactionObj = {
                                             from: token_public_address,
                                             to: erc20_address,
                                             nonce: count_val,
                                             gasPrice: web3.utils.toHex(99000000000),
-                                            gasLimit: web3.utils.toHex(50000),
+                                            gasLimit: web3.utils.toHex(150000),
                                             value: "0x0",
                                             data : token_contract.methods.transfer(user_public_address, amount).encodeABI(),
                                         }
@@ -209,10 +207,45 @@ router.post('/sms', (req, res) => {
                     tx.sign(privKey);
                     var serializedTx = tx.serialize();
                     web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err, hash) => {
-                        twilio.send(req.body.From, "Your district thanks you for your vote. You just increse your balance by 2 Rainbow Tokens", (err, is_send) => {
-                            if(err)
-                                console.log(`Error occured: ${err}`);
-                        });
+                        if(err)
+                            console.log(err);
+                        else {
+                            web3.eth.getTransactionCount(token_public_address, (err, count_val) => {
+                                if(err)
+                                    console.log(err)
+                                else {
+                                    var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
+                                    var amount = new BigNumber(2).mul(new BigNumber(10).pow(18));
+                                    
+                                    var rawTransactionObj = {
+                                        from: token_public_address,
+                                        to: erc20_address,
+                                        nonce: count_val,
+                                        gasPrice: web3.utils.toHex(99000000000),
+                                        gasLimit: web3.utils.toHex(150000),
+                                        value: "0x0",
+                                        data : token_contract.methods.transfer(user_public_address, amount).encodeABI(),
+                                    }
+                                    
+                                    var privKey = new Buffer(token_private_address.toLowerCase().replace('0x', ''), 'hex');
+                                    var tx = new EthereumTx(rawTransactionObj);
+
+                                    tx.sign(privKey);
+                                    var serializedTx = tx.serialize();
+                                    web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'), (err, token_hash) => {
+                                        if (err)
+                                            console.log(err.toString())
+                                        else {
+                                            twilio.send(req.body.From, "Your district thanks you for your vote. You just increse your balance by 2 Rainbow Tokens", (err, is_send) => {
+                                                if(err)
+                                                    console.log(`Error occured: ${err}`);
+                                            });
+                                        }
+
+                                    });
+                                }
+                            });
+                        }
                     });
                 });
             }
