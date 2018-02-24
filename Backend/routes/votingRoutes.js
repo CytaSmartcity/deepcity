@@ -263,7 +263,7 @@ router.post('/sms', (req, res) => {
         var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
         token_contract.methods.balanceOf(user_public_address).call({from: user_public_address}).then(balance => {
             var convert_balance = new BigNumber(balance).div(new BigNumber(10).pow(18));
-             twilio.send(req.body.From, `Your District Token Balance is ${convert_balance}`, (err, is_send) => {
+             twilio.send(req.body.From, `Your District Token Balance is ${convert_balance} DTC`, (err, is_send) => {
                 if(err)
                     console.log(`Error occured: ${err}`);
             });
