@@ -1,19 +1,5 @@
 [
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "personCounts",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -31,6 +17,10 @@
 			{
 				"name": "phone_number",
 				"type": "bytes16"
+			},
+			{
+				"name": "birth_year",
+				"type": "uint8"
 			},
 			{
 				"name": "district",
@@ -59,6 +49,20 @@
 	{
 		"constant": true,
 		"inputs": [],
+		"name": "personCounts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
 		"name": "getPersonDetails",
 		"outputs": [
 			{
@@ -76,6 +80,10 @@
 			{
 				"name": "phone_number",
 				"type": "bytes16"
+			},
+			{
+				"name": "birth_year",
+				"type": "uint8"
 			},
 			{
 				"name": "district",

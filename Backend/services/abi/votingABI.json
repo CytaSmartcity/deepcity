@@ -1,5 +1,27 @@
 [
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "referenceNo",
+				"type": "bytes32"
+			},
+			{
+				"name": "vote_type",
+				"type": "bytes4"
+			},
+			{
+				"name": "age_type",
+				"type": "bytes4"
+			}
+		],
+		"name": "voteImprovment",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [
 			{
@@ -10,15 +32,27 @@
 		"name": "improvmentVotes",
 		"outputs": [
 			{
-				"name": "",
+				"name": "total_yes",
 				"type": "uint8"
 			},
 			{
-				"name": "",
+				"name": "total_no",
 				"type": "uint8"
 			},
 			{
-				"name": "",
+				"name": "young",
+				"type": "uint8"
+			},
+			{
+				"name": "middle",
+				"type": "uint8"
+			},
+			{
+				"name": "elder",
+				"type": "uint8"
+			},
+			{
+				"name": "total_votes",
 				"type": "uint8"
 			}
 		],
@@ -41,42 +75,12 @@
 				"type": "bytes32"
 			},
 			{
-				"name": "total_yes",
-				"type": "uint8"
-			},
-			{
-				"name": "total_no",
-				"type": "uint8"
-			},
-			{
-				"name": "total_votes",
-				"type": "uint8"
-			},
-			{
 				"name": "description",
 				"type": "bytes32"
 			}
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "referenceNo",
-				"type": "bytes32"
-			},
-			{
-				"name": "vote_type",
-				"type": "bytes4"
-			}
-		],
-		"name": "voteImprovment",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
