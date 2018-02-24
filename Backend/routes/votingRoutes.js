@@ -19,6 +19,13 @@ const   voting_ABI = require('../services/abi/votingABI.json'),
 
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
+router.get('/balance', (req, res) => {
+    var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
+    token_contract.methods.balanceOf(user_public_address).call({from: user_public_address}).then(balance => {
+        res.status(200).send( new BigNumber(balance).div(new BigNumber(10).pow(18)));
+    });
+})
+
 router.get('/get', (req, res) => {
     var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
     voting_contract.methods.getImprovmentList().call({from: user_public_address}).then(improvments => {
@@ -252,7 +259,18 @@ router.post('/sms', (req, res) => {
         });
         
     }
+    else if(text[0] == 'my' || text[0] == 'My') {
+        var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
+        token_contract.methods.balanceOf(user_public_address).call({from: user_public_address}).then(balance => {
+            var convert_balance = new BigNumber(balance).div(new BigNumber(10).pow(18));
+             twilio.send(req.body.From, `Your District Token Balance is ${convert_balance}`, (err, is_send) => {
+                if(err)
+                    console.log(`Error occured: ${err}`);
+            });
+        });
+    }
 });
+
 
 
 module.exports = router
