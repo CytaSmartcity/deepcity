@@ -8,6 +8,7 @@ contract KYCitizen {
         bytes32 last_name;
         bytes8 id_number;
         bytes16 phone_number;
+        uint8 birth_year;
         bytes32 district;
         bytes4 post_code;
         bytes32 home_address;
@@ -19,6 +20,7 @@ contract KYCitizen {
         bytes32 last_name, 
         bytes8 id_number,
         bytes16 phone_number,
+        uint8 birth_year,
         bytes32 district,
         bytes4 post_code,
         bytes32 home_address
@@ -29,6 +31,7 @@ contract KYCitizen {
         personDetails[msg.sender].last_name = last_name;
         personDetails[msg.sender].id_number = id_number;
         personDetails[msg.sender].phone_number = phone_number;
+        personDetails[msg.sender].birth_year = birth_year;
         personDetails[msg.sender].district = district;
         personDetails[msg.sender].post_code = post_code;
         personDetails[msg.sender].home_address = home_address;
@@ -43,6 +46,7 @@ contract KYCitizen {
          bytes32 last_name,
          bytes32 id_number,
          bytes16 phone_number,
+         uint8 birth_year,
          bytes32 district,
          bytes4  post_code,
          bytes32 home_address,
@@ -53,6 +57,7 @@ contract KYCitizen {
             personDetails[msg.sender].last_name,
             personDetails[msg.sender].id_number,
             personDetails[msg.sender].phone_number,
+            personDetails[msg.sender].birth_year,
             personDetails[msg.sender].district,
             personDetails[msg.sender].post_code,
             personDetails[msg.sender].home_address,
