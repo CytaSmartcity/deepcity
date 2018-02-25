@@ -19,13 +19,6 @@ const   voting_ABI = require('../services/abi/votingABI.json'),
 
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
-router.get('/balance', (req, res) => {
-    var token_contract = new web3.eth.Contract(erc20_ABI, erc20_address)
-    token_contract.methods.balanceOf(user_public_address).call({from: user_public_address}).then(balance => {
-        res.status(200).send( new BigNumber(balance).div(new BigNumber(10).pow(18)));
-    });
-})
-
 router.get('/get', (req, res) => {
     var voting_contract = new web3.eth.Contract(voting_ABI, voting_address);
     voting_contract.methods.getImprovmentList().call({from: user_public_address}).then(improvments => {
@@ -72,16 +65,7 @@ router.post('/create', (req, res) => {
                     if(err)
                         res.status(500).send(err.toString());
                      else {
-                         var age_type = "";
-                         if(req.body.age >= 14 && req.body.age < 18) {
-                             age_type = "Y"
-                         }
-                         else if(req.body.age >=18 && req.body.age < 60) {
-                            age_type = "M"
-                         }
-                         else if(req.body.age >= 60) {
-                            age_type = "E"
-                         }
+                         var age_type = "M";
 
                         var rawTransactionObj = {
                             from: user_public_address,
@@ -160,7 +144,7 @@ router.post('/sms', (req, res) => {
                 });
 
                 return Promise.all(actions).then((improvmentsList) => {
-                    twilio.send(req.body.From, improvmentsList.join("\n"), (err, is_send) => {
+                    twilio.send(req.body.From,"Hey George, here is the latest suggested district improvement list \n\ " + improvmentsList.join("\n"), (err, is_send) => {
                         if(err)
                             console.log(`Error occured: ${err}`);
                     });
@@ -243,7 +227,7 @@ router.post('/sms', (req, res) => {
                                         if (err)
                                             console.log(err.toString())
                                         else {
-                                            twilio.send(req.body.From, "Your district thanks you for your vote. You just increse your balance by 2 Rainbow Tokens", (err, is_send) => {
+                                            twilio.send(req.body.From, "Your district thanks you for your vote. You just increse your balance by 2 District Tokens", (err, is_send) => {
                                                 if(err)
                                                     console.log(`Error occured: ${err}`);
                                             });
