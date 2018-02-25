@@ -10,54 +10,34 @@ export class UserService {
         private http: Http,
     ) {}
 
-    getPublicAddress() {
+    getTokenBalance() {
         return this.http.get(
-            this.apiUrl + '/user/publicaddress'
-        ).map(res => res.json());
-    }
-
-    getEtherBalance() {
-        return this.http.get(
-            this.apiUrl + '/user/balance'
+            this.apiUrl + '/kyc/balance'
         ).map(res => res.json());
     }
 
     getPersonDetails() {
         return this.http.get(
-            this.apiUrl + '/user/persondetails'
+            this.apiUrl + '/kyc/get'
         ).map(res => res.json());
     }
 
-    getCarDetails() {
+    getImprovementDetails() {
         return this.http.get(
-            this.apiUrl + '/user/cardetails'
+            this.apiUrl + '/vote/get'
         ).map(res => res.json());
     }
 
-    getInvestDetails() {
-        return this.http.get(
-            this.apiUrl + '/user/investdetails'
+    addVoteDetails(data) {
+        return this.http.post(
+            this.apiUrl + '/vote/create',
+            data
         ).map(res => res.json());
     }
-
 
     addPersonDetails (data) {
         return this.http.post(
-            this.apiUrl + '/user/persondetails',
-            data
-        ).map(res => res.json());
-    }
-
-    addCarDetails (data) {
-        return this.http.post(
-            this.apiUrl + '/user/cardetails',
-            data
-        ).map(res => res.json());
-    }
-
-    addInvestDetails(data) {
-        return this.http.post(
-            this.apiUrl + '/user/investdetails',
+            this.apiUrl + '/kyc/create',
             data
         ).map(res => res.json());
     }

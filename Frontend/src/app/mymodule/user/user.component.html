@@ -1,39 +1,196 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top:-100px">
+            <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top:-100px;">
                 <div class="boxed boxed--border  bg--secondary boxed--lg box-shadow">
-                    <ul>
+                    <ul *ngIf="personDetails">
                         <li>
                             <span>
                                 <b>Name:</b>
                             </span>
-                            <span> George Lambrianides</span> 
+                            <span> {{personDetails.first_name}} {{personDetails.last_name}}</span> 
                             <i class="material-icons" style="color:green;">done</i>
                         </li>
-                    <li><span><b>Phone Number:</b></span><span> 99-780-894</span></li>
-                    <li><span><b>District:</b></span><span> Limassol</span></li>
-                    <li><span><b>Identification Number:</b></span><span>980670</span></li>
-                    <li><span><b>Age:</b></span><span>18-35+</span></li>                
-                    <li><span><b>Phone Number:</b></span><span>99 780 894</span></li>
-                    <li><span><b>Post Code:</b></span><span>3320</span></li>
-                    <li><span><b>Address:</b></span><span>Odysseos 5, Flat 208</span></li>
-                    <li><span><b>Wallet:</b></span><span><a href="https://ropsten.etherscan.io/address/0xfebc3e8dfc3ddc887a1f97885c243d31442ee52f"> 0xFeBc3e8dfc3DDC887a1F97885c243d31442Ee52f</a></span></li>
-                    <li><br><a class="btn btn--primary" href="#CreateAccount" data-model="#CreateAccount" data-toggle="modal"><span class="btn__text">Create account</span></a></li>
+                        <li><span><b>Phone Number:</b></span><span> {{ personDetails.phone_number }}</span></li>
+                        <li><span><b>District:</b></span><span> Limassol</span></li>
+                        <li><span><b>Identification Number:</b></span><span>{{ personDetails.id_number }}</span></li>
+                        <li><span><b>Age:</b></span><span>{{ personDetails.birth_year }}</span></li>                
+                        <li><span><b>Post Code:</b></span><span>{{ personDetails.postal_code }}</span></li>
+                        <li><span><b>Address:</b></span><span>{{ personDetails.home_address }}</span></li>
+                        <li><span><b>Wallet:</b></span><span><a href="https://ropsten.etherscan.io/address/0xfebc3e8dfc3ddc887a1f97885c243d31442ee52f"> 0xFeBc3e8dfc3DDC887a1F97885c243d31442Ee52f</a></span></li>
+                    </ul>
+                <ul *ngIf="personDetails">
+                    <li><br><a class="btn btn--primary" href="#CreateAccount" data-toggle="modal" data-target="#KYC-modal"><span class="btn__text">Create account</span></a></li>
                 </ul>
     
                 </div>
             </div>
-            <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top:-100px">
+            <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top:-100px;" *ngIf="personDetails">
                 <div class="boxed boxed--border  bg--secondary boxed--lg box-shadow">
-                        <ul>
-                            <li>
-                                <span>
-                                    <b>DeepCity Tokens Balance:</b>
-                                </span>3,500 DCTs ~ €5,000</li>
-                        </ul>
+                    <ul>
+                        <li>
+                            <span>
+                                <b>District Tokens Balance:</b>
+                            </span>{{token_balance}} DCT</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<section *ngIf="personDetails">
+    <!--District Impvement Tabs-->
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="tabs-container" data-content-align="left" style="margin-bottom:20px;">
+                        <ul class="tabs">
+                            <li class="active">
+                                <div class="tab__title text-center">
+                                    <span class="h5">OnGoing Suggested Improvements</span> 
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div *ngFor="let improvement of improvementList" class="col-sm-4">
+                            <div class="card card-1 boxed boxed--sm boxed--border">
+                                <div class="card__top">
+                                    <div class="card__avatar text-left">
+                                        <span><strong>Limassol District</strong></span>
+                                    </div>
+                                    <div class="card__meta text-right"> <span>1/03/2018</span> </div>
+                                </div>
+                                <div class="card__body">
+                                    <p class="text-center">{{ improvement.title }}</p>
+                                    <p class="text-center">{{ improvement.description }}</p>
+                                </div>
+                                <div class="card__bottom">
+                                    <ul id="{{ improvement.reference_no }}" class="list-inline text-center">
+                                        <li>
+                                            <div class="card__action">
+                                                <a  class="btn btn--primary" (click)="addVote(improvement.reference_no, 'Y',$event)">
+                                                    <span class="btn__text">Yes</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="card__action">
+                                                <a class="btn btn-danger" (click)="addVote(improvement.reference_no, 'N',$event)">
+                                                    <span class="btn__text">No</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li><span><b>Reward:</b> 2 District Tokens</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<section *ngIf="personDetails">
+    <div class="container">
+        <div class="row">
+            <!--Table-->
+            <div class="col-sm-12">
+                <table class="border--round table--alternate-row">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Reference No.</th>
+                            <th>Yes Votes</th>
+                            <th>No Votes</th>
+                            <th>Age 14-17 Votes</th>
+                            <th>Age 18-59 Votes</th>
+                            <th>Age 60+ Votes</th>
+                            <th>Total Votes</th>
+                            <th>DCT Token Rewards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let improvement of improvementList; let count = index">
+                            <td>{{ count + 1 }}</td>
+                            <td>{{ improvement.reference_no }}</td>
+                            <td>{{ improvement.total_yes }}</td>
+                            <td>{{ improvement.total_no }}</td>
+                            <td>{{ improvement.young }}</td>
+                            <td>{{ improvement.middle }}</td>
+                            <td>{{ improvement.elder }}</td>
+                            <td>{{ improvement.total_votes }}</td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <!--End Table-->
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="KYC-modal" tabindex="-1" role="dialog" aria-labelledby="knowcitizen" aria-hidden="true"> 
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-left">Apply for KYC</h4>
+                </div>
+                <form [formGroup]="addPersonForm" (submit)="addKYC()" class="container-form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <span>First Name:</span>
+                            <input class="form-control" type="text" name="first_name" formControlName="first_name" required/>
+                        </div>
+                        <div class="form-group">
+                            <span>Last Name:</span>
+                            <input class="form-control" type="text" name="last_name" formControlName="last_name" required/>
+                        </div>
+                        <div class="form-group">
+                            <span>ID No.</span>
+                            <input class="form-control" type="text" name="id_number" formControlName="id_number" required/>
+                        </div>
+                        <div class="form-group">
+                            <span>Phone Number</span>
+                            <input class="form-control" type="text" name="phone_number" formControlName="phone_number" required/>
+                        </div>
+                        <div class="form-group">
+                            <span>Year of Birth</span>
+                            <input class="form-control" type="text" name="birth_year" formControlName="birth_year" required/>
+                        </div>
+                        <div class="form-group">
+                            <span>District</span>
+                            <select class="form-control" formControlName="district" required>
+                                <option value="">Please Select District</option>
+                                <option value="NIC">Nicosia</option>
+                                <option value="PAP">Paphos</option>
+                                <option value="LAR">Larnaca</option>
+                                <option value="LIM">Limassol</option>
+                                <option value="PAR">Paralimni</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <span>Post Code</span>
+                            <input class="form-control" type="text" name="post_code" formControlName="post_code" required/>
+                        </div>
+                        <div class="form-group">
+                            <span>Home Address</span>
+                            <input class="form-control" type="text" name="home_address" formControlName="home_address" required/>
+                        </div>
+                        <div class="form-group" *ngIf="personMessage">
+                            <span [ngClass]="personMessageClass">
+                                {{ personMessage }} 
+                                <a href="https://ropsten.etherscan.io/tx/{{ person_tx_hash }}" target="_blank">Transaction</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input [disabled]="!addPersonForm.valid"  class="btn btn-primary" type="submit" value="Add for Approval" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>     
+
