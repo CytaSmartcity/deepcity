@@ -114,7 +114,7 @@ router.post('/create', (req, res) => {
                                             if (err)
                                                 res.status(500).send(err.toString())
                                             else
-                                                res.status(200).json({hash: hash})
+                                                res.status(200).json({message:"your vote has been processed", hash: hash})
                                         });
                                     }
                                 });
