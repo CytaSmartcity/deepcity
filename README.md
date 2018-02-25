@@ -1,4 +1,4 @@
-DeepCi Decentralize Districts
+DeepCity Decentralize Districts
 
 In order to use our software you can utilize nodejs and postman in order to check the calls
 
