@@ -17,10 +17,60 @@
                         <li><span><b>Age:</b></span><span>{{ personDetails.birth_year }}</span></li>                
                         <li><span><b>Post Code:</b></span><span>{{ personDetails.postal_code }}</span></li>
                         <li><span><b>Address:</b></span><span>{{ personDetails.home_address }}</span></li>
-                        <li><span><b>Wallet:</b></span><span><a href="https://ropsten.etherscan.io/address/0xfebc3e8dfc3ddc887a1f97885c243d31442ee52f"> 0xFeBc3e8dfc3DDC887a1F97885c243d31442Ee52f</a></span></li>
+                        <li><span><b>Wallet:</b></span><span><a href="https://ropsten.etherscan.io/address/0x8299E6Cbf742217265f091CD6B503327F3a257D0"> 0x8299E6Cbf742217265f091CD6B503327F3a257D0</a></span></li>
                     </ul>
-                <ul *ngIf="personDetails">
-                    <li><br><a class="btn btn--primary" href="#CreateAccount" data-toggle="modal" data-target="#KYC-modal"><span class="btn__text">Create account</span></a></li>
+                <ul *ngIf="!personDetails">
+                    <li>
+                        <h4 class="text-center">Claim your District Account</h4>
+                        <form [formGroup]="addPersonForm" (submit)="addKYC()" class="container-form">
+                            <div class="form-group">
+                                <span>First Name:</span>
+                                <input class="form-control" type="text" name="first_name" formControlName="first_name" required/>
+                            </div>
+                            <div class="form-group">
+                                <span>Last Name:</span>
+                                <input class="form-control" type="text" name="last_name" formControlName="last_name" required/>
+                            </div>
+                            <div class="form-group">
+                                <span>ID No.</span>
+                                <input class="form-control" type="text" name="id_number" formControlName="id_number" required/>
+                            </div>
+                            <div class="form-group">
+                                <span>Phone Number</span>
+                                <input class="form-control" type="text" name="phone_number" formControlName="phone_number" required/>
+                            </div>
+                            <div class="form-group">
+                                <span>Year of Birth</span>
+                                <input class="form-control" type="text" name="birth_year" formControlName="birth_year" required/>
+                            </div>
+                            <div class="form-group">
+                                <span>District</span>
+                                <select class="form-control" formControlName="district" required>
+                                    <option value="">Please Select District</option>
+                                    <option value="NIC">Nicosia</option>
+                                    <option value="PAP">Paphos</option>
+                                    <option value="LAR">Larnaca</option>
+                                    <option value="LIM">Limassol</option>
+                                    <option value="PAR">Paralimni</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <span>Post Code</span>
+                                <input class="form-control" type="text" name="post_code" formControlName="post_code" required/>
+                            </div>
+                            <div class="form-group">
+                                <span>Home Address</span>
+                                <input class="form-control" type="text" name="home_address" formControlName="home_address" required/>
+                            </div>
+                            <div class="form-group" *ngIf="personMessage">
+                                <span [ngClass]="personMessageClass">
+                                    {{ personMessage }} 
+                                    <a href="https://ropsten.etherscan.io/tx/{{ person_tx_hash }}" target="_blank">Transaction</a>
+                                </span>
+                            </div>
+                            <input [disabled]="!addPersonForm.valid"  class="btn btn-primary" type="submit" value="Add for Approval" />
+                        </form>
+                    </li>
                 </ul>
     
                 </div>
@@ -131,66 +181,4 @@
     </div>
 </section>
 
-<!-- Modal -->
-<div class="modal fade" id="KYC-modal" tabindex="-1" role="dialog" aria-labelledby="knowcitizen" aria-hidden="true"> 
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-left">Apply for KYC</h4>
-                </div>
-                <form [formGroup]="addPersonForm" (submit)="addKYC()" class="container-form">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <span>First Name:</span>
-                            <input class="form-control" type="text" name="first_name" formControlName="first_name" required/>
-                        </div>
-                        <div class="form-group">
-                            <span>Last Name:</span>
-                            <input class="form-control" type="text" name="last_name" formControlName="last_name" required/>
-                        </div>
-                        <div class="form-group">
-                            <span>ID No.</span>
-                            <input class="form-control" type="text" name="id_number" formControlName="id_number" required/>
-                        </div>
-                        <div class="form-group">
-                            <span>Phone Number</span>
-                            <input class="form-control" type="text" name="phone_number" formControlName="phone_number" required/>
-                        </div>
-                        <div class="form-group">
-                            <span>Year of Birth</span>
-                            <input class="form-control" type="text" name="birth_year" formControlName="birth_year" required/>
-                        </div>
-                        <div class="form-group">
-                            <span>District</span>
-                            <select class="form-control" formControlName="district" required>
-                                <option value="">Please Select District</option>
-                                <option value="NIC">Nicosia</option>
-                                <option value="PAP">Paphos</option>
-                                <option value="LAR">Larnaca</option>
-                                <option value="LIM">Limassol</option>
-                                <option value="PAR">Paralimni</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <span>Post Code</span>
-                            <input class="form-control" type="text" name="post_code" formControlName="post_code" required/>
-                        </div>
-                        <div class="form-group">
-                            <span>Home Address</span>
-                            <input class="form-control" type="text" name="home_address" formControlName="home_address" required/>
-                        </div>
-                        <div class="form-group" *ngIf="personMessage">
-                            <span [ngClass]="personMessageClass">
-                                {{ personMessage }} 
-                                <a href="https://ropsten.etherscan.io/tx/{{ person_tx_hash }}" target="_blank">Transaction</a>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input [disabled]="!addPersonForm.valid"  class="btn btn-primary" type="submit" value="Add for Approval" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>     
 

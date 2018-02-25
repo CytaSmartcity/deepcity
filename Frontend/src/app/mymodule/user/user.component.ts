@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
 import { FormControl,FormBuilder, FormsModule , FormGroup, Validators } from '@angular/forms'
-
 import { UserService } from '../../services/user.service'
+
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
@@ -105,23 +105,18 @@ import { UserService } from '../../services/user.service'
         });
     }
 
+   
     addVote(reference_no,vote_type, event) {
-        console.log(event);
-        return;
-        var target = event.target || event.srcElement || event.currentTarget;
-        var idAttr = target.attributes.id;
-        var value = idAttr.nodeValue;
         const data = {
             reference_no: reference_no,
             vote_type: vote_type
         }
 
         this.userService.addVoteDetails(data).subscribe(res => {
-            // this.investMessageClass = 'alert alert-success';
-            // this.investMessage = res.message;
+            document.getElementById(reference_no).innerHTML = "";
+            document.getElementById(reference_no).innerHTML = `<div class="text_center">${res.message} <br><a href="https://ropsten.etherscan.io/tx/${res.hash}" target='_blank'">Transaction</a><br> Thank You</div>`;
         }, (err) => {
-            // this.investMessageClass = 'alert alert-danger';
-            // this.investMessage = err._body;
+
         })
 
     }
